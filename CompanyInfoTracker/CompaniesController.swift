@@ -22,6 +22,36 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelagat
 
     var companies = [Company]()
     
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { (_, indexPath) in
+            let company = self.companies[indexPath.row]
+            print("Attempting to delete company: ",company.name ?? "")
+            
+            //remove the company from our tableview
+            self.companies.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+            
+            //delete company from CoreData
+            let context = CoreDataManager.shared.persistentContainer.viewContext
+            
+            context.delete(company)
+            do {
+                try context.save()
+            } catch let saveErr {
+                print("failed to delete company :",saveErr)
+            }
+            
+        }
+        
+        let editAction = UITableViewRowAction(style: .normal, title: "Edit") { (_, indexPath) in
+            let company = self.companies[indexPath.row]
+            print("Editing company: ",company.name ?? "")
+        }
+        
+        return [deleteAction, editAction]
+    }
+    
     private func fetchCompanies() {
         // initialization of our Core Data stack
         
@@ -40,6 +70,7 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelagat
             print("Failed to fetch companies : ",fetchErr)
         }
     }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
