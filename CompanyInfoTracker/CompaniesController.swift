@@ -10,6 +10,14 @@ import UIKit
 import CoreData
 
 class CompaniesController: UITableViewController, CreateCompanyControllerDelagate {
+    
+    func didEditCompany(company: Company) {
+        // update my tableview
+        let row = companies.index(of: company)
+        let relaodIndexPath = IndexPath(row: row!, section: 0)
+        tableView.reloadRows(at: [relaodIndexPath], with: .middle)
+    }
+    
 
     func didAddCompany(company: Company) {
         //1 Modify array
@@ -43,13 +51,25 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelagat
             }
             
         }
+        deleteAction.backgroundColor = .lightRed
         
-        let editAction = UITableViewRowAction(style: .normal, title: "Edit") { (_, indexPath) in
-            let company = self.companies[indexPath.row]
-            print("Editing company: ",company.name ?? "")
-        }
+        let editAction = UITableViewRowAction(style: .normal, title: "Edit", handler: editHandlerFunction)
+        editAction.backgroundColor = .darkBlue
         
         return [deleteAction, editAction]
+    }
+    
+//    func didEditCompany(company: Company) {
+//        
+//    }
+    
+    private func editHandlerFunction(action: UITableViewRowAction, indexPath: IndexPath) {
+        print("Editing company in separate func")
+        let editCompanyController = CreateCompanyController()
+        editCompanyController.delegate = self
+        editCompanyController.company = companies[indexPath.row]
+        let navController = CustomNavigationController(rootViewController: editCompanyController)
+        present(navController, animated: true, completion: nil)
     }
     
     private func fetchCompanies() {
