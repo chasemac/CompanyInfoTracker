@@ -59,10 +59,6 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelagat
         return [deleteAction, editAction]
     }
     
-//    func didEditCompany(company: Company) {
-//        
-//    }
-    
     private func editHandlerFunction(action: UITableViewRowAction, indexPath: IndexPath) {
         print("Editing company in separate func")
         let editCompanyController = CreateCompanyController()
@@ -74,7 +70,6 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelagat
     
     private func fetchCompanies() {
         // initialization of our Core Data stack
-        
         let context = CoreDataManager.shared.persistentContainer.viewContext
         
         let fetchRequest = NSFetchRequest<Company>(entityName: "Company")
@@ -97,6 +92,8 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelagat
         
         fetchCompanies()
         
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(handleReset))
+        
 //        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "TEST", style: .plain, target: self, action: #selector(addCompany))
         view.backgroundColor = .white
         
@@ -107,16 +104,60 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelagat
         tableView.separatorColor = .white
         tableView.tableFooterView = UIView()
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
+        tableView.register(CompanyCell.self, forCellReuseIdentifier: "cellId")
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "plus").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleAddCompany))
+    }
+    
+    @objc private func handleReset() {
+        print("Attempting to delete all core data objects")
+        
+        let context = CoreDataManager.shared.persistentContainer.viewContext
+//        companies.forEach { (company) in
+//            context.delete(company)
+//
+//        }
+        
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: Company.fetchRequest())
+        do {
+            try context.execute(batchDeleteRequest)
+            
+            //upon deletion from core data succeeded
+            
+            var indexPathsToRemove = [IndexPath]()
+            
+            for (index, _) in companies.enumerated() {
+                let indexPath = IndexPath(row: index, section: 0)
+                indexPathsToRemove.append(indexPath)
+            }
+            companies.removeAll()
+            tableView.deleteRows(at: indexPathsToRemove, with: .left)
+//            companies.removeAll()
+//            tableView.reloadData()
+            
+        } catch let delErr {
+            print("failed to delete objects from Core Data: ", delErr)
+        }
+
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.text = "No companies available..."
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        return label
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        
+        return companies.count == 0 ? 150 : 0
     }
     
     @objc func handleAddCompany() {
         print("Adding company..")
         let createCompanyController = CreateCompanyController()
- //       createCompanyController.view.backgroundColor = .green
-        
         let navController = CustomNavigationController(rootViewController: createCompanyController)
         
         createCompanyController.delegate = self
@@ -135,34 +176,16 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelagat
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath)
-        
-        cell.backgroundColor = .tealColor
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! CompanyCell
         
         let company = companies[indexPath.row]
-        
-        if let name = company.name, let founded = company.founded {
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMM dd, YYYY"
-            
-            let foundedDateString = dateFormatter.string(from: founded)
-  //          let locale = Locale(identifier: "EN")
-            
-            let dateString =  "\(name) - Founded: \(foundedDateString)"
-            cell.textLabel?.text = dateString
-        } else {
-            cell.textLabel?.text = company.name
-        }
-        cell.textLabel?.textColor = .white
-        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        cell.imageView?.image = #imageLiteral(resourceName: "select_photo_empty")
-        
-        if let imageData = company.imageData {
-            cell.imageView?.image = UIImage(data: imageData)
-        }
-        
+        cell.company = company
+
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
