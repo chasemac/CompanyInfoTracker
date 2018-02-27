@@ -25,18 +25,20 @@ class EmployeesController: UITableViewController, CreateEmployeeControllerDelega
     }
     
     private func fetchEmployees() {
-        print("trying to fetch employees..")
-        let context = CoreDataManager.shared.persistentContainer.viewContext
-        let request = NSFetchRequest<Employee>(entityName: "Employee")
-        do {
-            let employees = try context.fetch(request)
-            self.employees = employees
-//            employees.forEach({ (employee) in
-//                print("Employee name: ",employee.name ?? "")
-//            })
-        } catch let err {
-            print("failed to fetch employees: ", err)
-        }
+        guard let companyEmployees = company?.employees?.allObjects as? [Employee] else {return}
+        self.employees = companyEmployees
+//        print("trying to fetch employees..")
+//        let context = CoreDataManager.shared.persistentContainer.viewContext
+//        let request = NSFetchRequest<Employee>(entityName: "Employee")
+//        do {
+//            let employees = try context.fetch(request)
+//            self.employees = employees
+////            employees.forEach({ (employee) in
+////                print("Employee name: ",employee.name ?? "")
+////            })
+//        } catch let err {
+//            print("failed to fetch employees: ", err)
+//        }
         
     }
     
@@ -48,6 +50,11 @@ class EmployeesController: UITableViewController, CreateEmployeeControllerDelega
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         let employee = employees[indexPath.row]
         cell.textLabel?.text = employee.name
+        
+        if let taxId = employee.employeeInformation?.taxId {
+            cell.textLabel?.text = "\(employee.name ?? "") \(taxId)"
+        }
+        
         cell.backgroundColor = .tealColor
         cell.textLabel?.textColor = .white
         cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
@@ -71,6 +78,7 @@ class EmployeesController: UITableViewController, CreateEmployeeControllerDelega
         
         let createEmployeeController = CreateEmployeeController()
         createEmployeeController.delegate = self
+        createEmployeeController.company = company
         let navController = UINavigationController(rootViewController: createEmployeeController)
         present(navController, animated: true, completion: nil)
     }
