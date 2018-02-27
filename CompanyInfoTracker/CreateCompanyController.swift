@@ -20,9 +20,20 @@ class CreateCompanyController: UIViewController, UIImagePickerControllerDelegate
     var company: Company? {
         didSet {
             nameTextField.text = company?.name
+            if let imageData = company?.imageData {
+                companyImageView.image = UIImage(data: imageData)
+                setupCircularImageStyle()
+            }
             guard let founded = company?.founded else {return}
             datePicker.date = founded
         }
+    }
+    
+    private func setupCircularImageStyle() {
+        companyImageView.layer.cornerRadius = companyImageView.frame.width / 2
+        companyImageView.clipsToBounds = true
+        companyImageView.layer.borderWidth = 2
+        companyImageView.layer.borderColor = UIColor.darkBlue.cgColor
     }
     
     var delegate: CreateCompanyControllerDelagate?
@@ -30,6 +41,7 @@ class CreateCompanyController: UIViewController, UIImagePickerControllerDelegate
     lazy var companyImageView : UIImageView = {
         let imageView = UIImageView(image: #imageLiteral(resourceName: "select_photo_empty").withRenderingMode(.alwaysOriginal))
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
         imageView.isUserInteractionEnabled = true // REMEMBER TO DO THIS
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectPhoto)))
         return imageView
@@ -50,12 +62,12 @@ class CreateCompanyController: UIViewController, UIImagePickerControllerDelegate
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        print(info)
         if let editedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
             companyImageView.image = editedImage
         } else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             companyImageView.image = originalImage
         }
+        setupCircularImageStyle()
         dismiss(animated: true, completion: nil)
     }
     
@@ -115,6 +127,11 @@ class CreateCompanyController: UIViewController, UIImagePickerControllerDelegate
         let context = CoreDataManager.shared.persistentContainer.viewContext
         company?.name = nameTextField.text
         company?.founded = datePicker.date
+        if let companyImage = companyImageView.image {
+            let imageData = UIImageJPEGRepresentation(companyImage, 0.8)
+            company?.imageData = imageData
+        }
+        
         do {
             try context.save()
             //success
@@ -132,6 +149,12 @@ class CreateCompanyController: UIViewController, UIImagePickerControllerDelegate
         guard let name = self.nameTextField.text else {return}
         company.setValue(name, forKey: "name")
         company.setValue(datePicker.date, forKey: "founded")
+        
+        if let companyImage = companyImageView.image {
+            let imageData = UIImageJPEGRepresentation(companyImage, 0.8)
+            company.setValue(imageData, forKey: "imageData")
+        }
+        
         
         //perform save
         do {
