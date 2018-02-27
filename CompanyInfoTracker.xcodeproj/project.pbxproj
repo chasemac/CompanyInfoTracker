@@ -20,6 +20,9 @@
 		0ECEB3C22045CB4D00EF8BAA /* CompanyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECEB3C12045CB4D00EF8BAA /* CompanyCell.swift */; };
 		0ECEB3C52045D8BA00EF8BAA /* CompaniesController+CreateCompany.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECEB3C42045D8BA00EF8BAA /* CompaniesController+CreateCompany.swift */; };
 		0ECEB3C72045D97700EF8BAA /* CompaniesController+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECEB3C62045D97700EF8BAA /* CompaniesController+UITableView.swift */; };
+		0ECEB3C92045E8FD00EF8BAA /* EmployeesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECEB3C82045E8FD00EF8BAA /* EmployeesController.swift */; };
+		0ECEB3CC2045EAD900EF8BAA /* UIViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECEB3CB2045EAD900EF8BAA /* UIViewController+Helpers.swift */; };
+		0ECEB3CE2045EC3500EF8BAA /* CreateEmployeeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECEB3CD2045EC3500EF8BAA /* CreateEmployeeController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +41,9 @@
 		0ECEB3C12045CB4D00EF8BAA /* CompanyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyCell.swift; sourceTree = "<group>"; };
 		0ECEB3C42045D8BA00EF8BAA /* CompaniesController+CreateCompany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CompaniesController+CreateCompany.swift"; sourceTree = "<group>"; };
 		0ECEB3C62045D97700EF8BAA /* CompaniesController+UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CompaniesController+UITableView.swift"; sourceTree = "<group>"; };
+		0ECEB3C82045E8FD00EF8BAA /* EmployeesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeesController.swift; sourceTree = "<group>"; };
+		0ECEB3CB2045EAD900EF8BAA /* UIViewController+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Helpers.swift"; sourceTree = "<group>"; };
+		0ECEB3CD2045EC3500EF8BAA /* CreateEmployeeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEmployeeController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +76,7 @@
 		0E0ACC0D2040DEB100A77F63 /* CompanyInfoTracker */ = {
 			isa = PBXGroup;
 			children = (
+				0ECEB3CA2045EAC000EF8BAA /* Helpers */,
 				0ECEB3C32045CCEC00EF8BAA /* Companies */,
 				0E0ACC0E2040DEB100A77F63 /* AppDelegate.swift */,
 				0E0ACC242040F92900A77F63 /* CreateCompanyController.swift */,
@@ -92,8 +99,18 @@
 				0ECEB3C12045CB4D00EF8BAA /* CompanyCell.swift */,
 				0ECEB3C42045D8BA00EF8BAA /* CompaniesController+CreateCompany.swift */,
 				0ECEB3C62045D97700EF8BAA /* CompaniesController+UITableView.swift */,
+				0ECEB3C82045E8FD00EF8BAA /* EmployeesController.swift */,
+				0ECEB3CD2045EC3500EF8BAA /* CreateEmployeeController.swift */,
 			);
 			path = Companies;
+			sourceTree = "<group>";
+		};
+		0ECEB3CA2045EAC000EF8BAA /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				0ECEB3CB2045EAD900EF8BAA /* UIViewController+Helpers.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,8 +189,11 @@
 				0E0ACC212040ED3C00A77F63 /* UIColor+theme.swift in Sources */,
 				0E0ACC112040DEB100A77F63 /* CompaniesController.swift in Sources */,
 				0E0ACC252040F92900A77F63 /* CreateCompanyController.swift in Sources */,
+				0ECEB3CC2045EAD900EF8BAA /* UIViewController+Helpers.swift in Sources */,
 				0ECEB3C22045CB4D00EF8BAA /* CompanyCell.swift in Sources */,
 				0ECEB3C72045D97700EF8BAA /* CompaniesController+UITableView.swift in Sources */,
+				0ECEB3CE2045EC3500EF8BAA /* CreateEmployeeController.swift in Sources */,
+				0ECEB3C92045E8FD00EF8BAA /* EmployeesController.swift in Sources */,
 				0E0ACC0F2040DEB100A77F63 /* AppDelegate.swift in Sources */,
 				0E2442C72044990800F82145 /* IntermediateTrainingModels.xcdatamodeld in Sources */,
 				0E2442C92044A09900F82145 /* CoreDataManager.swift in Sources */,
