@@ -13,6 +13,44 @@ class CompaniesController: UITableViewController {
     
     var companies = [Company]()
     
+    //let's do some tricky updates with coreData
+    @objc private func doUpdates() {
+        print("doing updates")
+        CoreDataManager.shared.persistentContainer.performBackgroundTask { (backgroundContext) in
+            
+            let request: NSFetchRequest<Company> = Company.fetchRequest()
+            do {
+                let companies = try backgroundContext.fetch(request)
+                companies.forEach({ (company) in
+                    print(company.name ?? "")
+                    company.name = "C: \(company.name ?? "")"
+                })
+                
+                do {
+                    try backgroundContext.save()
+                    
+                    // try to update UI after a save
+                    DispatchQueue.main.async {
+                        
+                        // reset will forget all of the objects you set before
+                        CoreDataManager.shared.persistentContainer.viewContext.reset()
+                        
+                        // you don't want to refetch everything if you're just ubpating one or two things
+                        self.companies = CoreDataManager.shared.fetchCompanies()
+                        
+                        // can we merge changes onto main view context
+                        self.tableView.reloadData()
+                    }
+                } catch let saveErr {
+                    print("failed to save on background: ", saveErr)
+                }
+                
+            } catch let err {
+                print("Failed to fetch companies on background: ",err)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,7 +58,7 @@ class CompaniesController: UITableViewController {
         
         navigationItem.leftBarButtonItems = [
         UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(handleReset)),
-        UIBarButtonItem(title: "Do Work", style: .plain, target: self, action: #selector(doWork))
+        UIBarButtonItem(title: "Do Updates", style: .plain, target: self, action: #selector(doUpdates))
         ]
         
         view.backgroundColor = .white
@@ -41,14 +79,18 @@ class CompaniesController: UITableViewController {
         print("trying to do work")
         
         CoreDataManager.shared.persistentContainer.performBackgroundTask({ (backgroundContext) in
-            (0...20000).forEach { (value) in
+            (0...5).forEach { (value) in
                 print(value)
                 let company = Company(context: backgroundContext)
-                company.name = "Names" + String(value)
+                company.name = String(value)
                 
             }
             do {
                 try backgroundContext.save()
+                DispatchQueue.main.async {
+                    self.companies = CoreDataManager.shared.fetchCompanies()
+                    self.tableView.reloadData()
+                }
             } catch let err {
                 print("Failed to save: ", err)
             }
@@ -56,13 +98,15 @@ class CompaniesController: UITableViewController {
         
         // GCD = Grand Central Dispatch
 
-        DispatchQueue.global(qos: .background).async {
-            // creating some Compan objects on a background thread
-
-          //  let context = CoreDataManager.shared.persistentContainer.viewContext
-
-        }
+//        DispatchQueue.global(qos: .background).async {
+//            // creating some Compan objects on a background thread
+//
+//          //  let context = CoreDataManager.shared.persistentContainer.viewContext
+//
+//        }
     }
+    
+
     
     @objc private func handleReset() {
         
