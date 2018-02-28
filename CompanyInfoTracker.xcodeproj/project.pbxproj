@@ -24,6 +24,7 @@
 		0ECEB3CC2045EAD900EF8BAA /* UIViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECEB3CB2045EAD900EF8BAA /* UIViewController+Helpers.swift */; };
 		0ECEB3CE2045EC3500EF8BAA /* CreateEmployeeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECEB3CD2045EC3500EF8BAA /* CreateEmployeeController.swift */; };
 		0ECEB3D1204728D400EF8BAA /* EmployeeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECEB3D0204728D400EF8BAA /* EmployeeType.swift */; };
+		0ECEB3D320474C9200EF8BAA /* CompaniesAutoUpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECEB3D220474C9200EF8BAA /* CompaniesAutoUpdateController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		0ECEB3CB2045EAD900EF8BAA /* UIViewController+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Helpers.swift"; sourceTree = "<group>"; };
 		0ECEB3CD2045EC3500EF8BAA /* CreateEmployeeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEmployeeController.swift; sourceTree = "<group>"; };
 		0ECEB3D0204728D400EF8BAA /* EmployeeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeType.swift; sourceTree = "<group>"; };
+		0ECEB3D220474C9200EF8BAA /* CompaniesAutoUpdateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesAutoUpdateController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				0ECEB3C42045D8BA00EF8BAA /* CompaniesController+CreateCompany.swift */,
 				0ECEB3C62045D97700EF8BAA /* CompaniesController+UITableView.swift */,
 				0ECEB3CF20460AA000EF8BAA /* Employees */,
+				0ECEB3D220474C9200EF8BAA /* CompaniesAutoUpdateController.swift */,
 			);
 			path = Companies;
 			sourceTree = "<group>";
@@ -207,6 +210,7 @@
 				0ECEB3CE2045EC3500EF8BAA /* CreateEmployeeController.swift in Sources */,
 				0ECEB3C92045E8FD00EF8BAA /* EmployeesController.swift in Sources */,
 				0E0ACC0F2040DEB100A77F63 /* AppDelegate.swift in Sources */,
+				0ECEB3D320474C9200EF8BAA /* CompaniesAutoUpdateController.swift in Sources */,
 				0E2442C72044990800F82145 /* IntermediateTrainingModels.xcdatamodeld in Sources */,
 				0E2442C92044A09900F82145 /* CoreDataManager.swift in Sources */,
 				0E0ACC232040F66E00A77F63 /* Company.swift in Sources */,
