@@ -83,7 +83,7 @@ class CompaniesAutoUpdateController: UITableViewController, NSFetchedResultsCont
         
         let request: NSFetchRequest<Company> = Company.fetchRequest()
         
-        request.predicate = NSPredicate(format: "name CONTAINS %@", "B")
+ //       request.predicate = NSPredicate(format: "name CONTAINS %@", "B")
         
         let context = CoreDataManager.shared.persistentContainer.viewContext
         let companiesWithB = try? context.fetch(request)
@@ -91,7 +91,6 @@ class CompaniesAutoUpdateController: UITableViewController, NSFetchedResultsCont
         companiesWithB?.forEach { (company) in
             context.delete(company)
         }
-        
         try? context.save()
     }
     
@@ -99,16 +98,19 @@ class CompaniesAutoUpdateController: UITableViewController, NSFetchedResultsCont
         super.viewDidLoad()
          navigationItem.title = "Company AutoUpdates"
 
-        
         navigationItem.leftBarButtonItems = [
             UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(handleAdd)),
             UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(handleDelete))
         ]
         tableView.backgroundColor = UIColor.darkBlue
         tableView.register(CompanyCell.self, forCellReuseIdentifier: cellId)
-        fetchedResultsController.fetchedObjects?.forEach({ (company) in
-            print(company.name ?? "")
-        })
+//        fetchedResultsController.fetchedObjects?.forEach({ (company) in
+//            print(company.name ?? "")
+//        })
+//        let service = Service()
+//        service.downloadCompaniesFromServer()
+        Service.shared.downloadCompaniesFromServer()
+        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
